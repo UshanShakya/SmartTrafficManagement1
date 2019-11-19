@@ -1,4 +1,4 @@
-package Class;
+package com.example.smarttrafficmanagement1.Class;
 
 public class Reports {
     private String userName;

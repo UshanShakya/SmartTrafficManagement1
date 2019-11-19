@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartTrafficManagement1</string>
+    <string name="places_api_key">AIzaSyDxnxgho5hbayaP9nCztTNTY84Vh6kKGOY</string>
 </resources>

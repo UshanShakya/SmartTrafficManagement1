@@ -1,9 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaceActivity">
+    tools:context=".PlaceActivity"
+    android:background="@drawable/background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_get_current_place"
+                    android:text="Find Current Place"
+                    android:layout_marginTop="10dp"
+                    android:padding="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/button_round"
+                    android:layout_gravity="center"/>
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/edt_Address"
+                        android:hint="Current Address"
+                        android:textSize="20sp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@android:color/white"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <Button
+                    android:background="@drawable/button_round"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_get_photo"
+                    android:text="Get Location Photo"
+                    android:layout_marginTop="20dp"
+                    android:padding="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/img_Location"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+                <TextView
+                    android:id="@+id/tv_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:background="@drawable/button_round"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_confirm"
+                    android:text="Confirm Location"
+                    android:layout_marginTop="20dp"
+                    android:padding="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>

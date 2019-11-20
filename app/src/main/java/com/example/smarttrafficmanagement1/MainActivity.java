@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     List<AuthUI.IdpConfig> providers;
-    private Button btnReport, btnLogout;
+    private Button btnReport, btnDashboard, btnLogout;
     private final static int MY_REQUEST_CODE =0404;
 
 
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnLogout = findViewById(R.id.btn_sign_out);
         btnReport = findViewById(R.id.btn_report);
+        btnDashboard = findViewById(R.id.btn_dashboard);
 
         providers= Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -41,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         showSignInOptions();
+        btnDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dashboardIntent = new Intent(MainActivity.this, DashboardActivity.class);
+                startActivity(dashboardIntent);
+            }
+        });
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MY_REQUEST_CODE)
@@ -92,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
                 btnLogout.setEnabled(true);
                 btnReport.setEnabled(true);
-
+                btnDashboard.setEnabled(true);
             }
             else{
                 Toast.makeText(this, ""+response.getError().getMessage(), Toast.LENGTH_SHORT).show();

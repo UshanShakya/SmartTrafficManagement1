@@ -31,9 +31,7 @@
 
 
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+
                     <EditText
                         android:id="@+id/edt_Address"
                         android:hint="Current Address"
@@ -43,7 +41,6 @@
                         android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-                </android.support.design.widget.TextInputLayout>
 
 
 

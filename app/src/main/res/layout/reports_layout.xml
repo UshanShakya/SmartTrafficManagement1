@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
 
     <TextView
@@ -11,16 +12,18 @@
         android:text="Name of reporter"/>
 
     <TextView
+        android:layout_below="@+id/reporter_Email"
         android:id="@+id/reporter_Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name of reporter"/>
+        android:text="Location"/>
     <TextView
+        android:layout_below="@+id/reporter_Location"
         android:id="@+id/reporter_Report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name of reporter"/>
+        android:text="Kind of report"/>
 
 
 
-</LinearLayout>
+</RelativeLayout>

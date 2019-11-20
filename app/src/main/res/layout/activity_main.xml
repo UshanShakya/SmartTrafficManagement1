@@ -26,6 +26,16 @@
         android:text="Report"
         />
 
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/btn_report"
+        android:id="@+id/btn_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:enabled="false"
+        android:text="Dashboard"
+        />
 
 
 </RelativeLayout>

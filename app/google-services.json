@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "805341968180-84u7h40ps4s8jvqn0g15i7qu1tjodqi2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smarttrafficmanagement1",
+            "certificate_hash": "6c53e283ee543ba4182b30e1e49a9a652f7952ff"
+          }
+        },
+        {
           "client_id": "805341968180-6ff9ngn8o2jaejp9gs965vv5d60fij23.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -185,14 +185,14 @@ public class PlaceActivity extends AppCompatActivity {
 
                     FindCurrentPlaceResponse response = task.getResult();
 
-                    Collections.sort(response.getPlaceLikelihoods(), new Comparator<PlaceLikelihood>() {
-                        @Override
-                        public int compare(PlaceLikelihood o1, PlaceLikelihood o2) {
-                            return new Double(o1.getLikelihood()).compareTo(o2.getLikelihood());
-                        }
-                    });
-
-                    Collections.reverse(response.getPlaceLikelihoods());
+//                    Collections.sort(response.getPlaceLikelihoods(), new Comparator<PlaceLikelihood>() {
+//                        @Override
+//                        public int compare(PlaceLikelihood o1, PlaceLikelihood o2) {
+//                            return new Double(o1.getLikelihood()).compareTo(o2.getLikelihood());
+//                        }
+//                    });
+//
+//                    Collections.reverse(response.getPlaceLikelihoods());
 
                     placeID = response.getPlaceLikelihoods().get(0).getPlace().getId();
 
@@ -213,6 +213,11 @@ public class PlaceActivity extends AppCompatActivity {
     private void initPlaces() {
         Places.initialize(this,getString(R.string.places_api_key));
         placesClient = Places.createClient(this);
+    }
+    public void onBackPressed() {
+        Intent intent = new Intent(PlaceActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

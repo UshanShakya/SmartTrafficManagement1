@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +29,12 @@ public class ReportActivity extends AppCompatActivity {
     long maxId =0;
 
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ReportActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +48,21 @@ public class ReportActivity extends AppCompatActivity {
         cvOthers = findViewById(R.id.cvOthers);
         placeName = findViewById(R.id.tvplaceName);
 
+        reports = new Reports();
 
-        databaseReference= FirebaseDatabase.getInstance().getReference().child("Reports");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                    maxId= (dataSnapshot.getChildrenCount());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("Report");
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists())
+//                    maxId= (dataSnapshot.getChildrenCount());
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userName = user.getEmail();
 
@@ -77,8 +85,10 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Accident");
                 reports.setUserName(userName);
                 databaseReference.push().setValue(reports);
-                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
+//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT).show();
+
+
             }
         });
 
@@ -89,7 +99,7 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Construction");
                 reports.setUserName(userName);
                 databaseReference.push().setValue(reports);
-                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
+//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 Toast.makeText(ReportActivity.this, "Construction Reported Successfully", Toast.LENGTH_SHORT).show();
 
 
@@ -103,8 +113,9 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Traffic Jam");
                 reports.setUserName(userName);
                 databaseReference.push().setValue(reports);
-                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
+//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 Toast.makeText(ReportActivity.this, "Traffic Jam Reported Successfully", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -116,8 +127,9 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Others");
                 reports.setUserName(userName);
                 databaseReference.push().setValue(reports);
-                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
+//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT).show();
+
 
             }
         });

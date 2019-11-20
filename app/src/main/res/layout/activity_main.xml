@@ -15,6 +15,17 @@
         android:text="Sign Out"
         />
 
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/btn_sign_out"
+        android:id="@+id/btn_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:enabled="false"
+        android:text="Report"
+        />
+
 
 
 </RelativeLayout>

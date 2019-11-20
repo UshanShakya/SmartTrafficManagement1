@@ -15,6 +15,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnLogout = findViewById(R.id.btn_sign_out);
+        btnReport = findViewById(R.id.btn_report);
 
         providers= Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -39,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         showSignInOptions();
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reportIntent = new Intent(MainActivity.this, PlaceActivity.class);
+                startActivity(reportIntent);
+            }
+        });
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
                 btnLogout.setEnabled(true);
+                btnReport.setEnabled(true);
 
             }
             else{

@@ -1,6 +1,7 @@
 package com.example.smarttrafficmanagement1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -8,7 +9,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +34,9 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -49,9 +55,10 @@ public class PlaceActivity extends AppCompatActivity {
             Place.Field.NAME,
             Place.Field.ADDRESS);
     TextView edt_Address, tvDetails;
-    ImageView img_Location;
+//    ImageView img_Location;
     Button btn_find_current_place, btn_get_Photo, btn_confirm;
     private String placeID = "";
+
 
 
     @Override
@@ -61,12 +68,14 @@ public class PlaceActivity extends AppCompatActivity {
 
         requestPermission();
 
+
         btn_find_current_place = findViewById(R.id.btn_get_current_place);
         edt_Address = findViewById(R.id.edt_Address);
         tvDetails = findViewById(R.id.tv_details);
-        btn_get_Photo = findViewById(R.id.btn_get_photo);
-        img_Location = findViewById(R.id.img_Location);
+        btn_get_Photo = findViewById(R.id.btn_get_lat_lan);
+//        img_Location = findViewById(R.id.img_Location);
         btn_confirm = findViewById(R.id.btn_confirm);
+
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +102,9 @@ public class PlaceActivity extends AppCompatActivity {
         btn_get_Photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(intent,CAMERA_REQUEST_CODE);
                 if (TextUtils.isEmpty(placeID)) {
                     Toast.makeText(PlaceActivity.this, "Place Id cannot be null.", Toast.LENGTH_SHORT).show();
                     return;
@@ -110,22 +122,22 @@ public class PlaceActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
                     @Override
                     public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-                        final Place place = fetchPlaceResponse.getPlace();
-                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
-                        placesClient.fetchPhoto(photoRequest)
-                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
-                                    @Override
-                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
-                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                                        img_Location.setImageBitmap(bitmap);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                        final Place place = fetchPlaceResponse.getPlace();
+//                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+//                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
+//                        placesClient.fetchPhoto(photoRequest)
+//                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
+//                                    @Override
+//                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
+//                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
+//                                        img_Location.setImageBitmap(bitmap);
+//                                    }
+//                                }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 
                         FetchPlaceRequest request1 = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.LAT_LNG)).build();
                         placesClient.fetchPlace(request1)

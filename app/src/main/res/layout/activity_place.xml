@@ -42,22 +42,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-
-
                 <Button
                     android:background="@drawable/button_round"
                     android:layout_gravity="center"
-                    android:id="@+id/btn_get_photo"
-                    android:text="Get Location Photo"
+                    android:id="@+id/btn_get_lat_lan"
+                    android:text="Add Location Photo"
                     android:layout_marginTop="20dp"
                     android:padding="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <ImageView
-                    android:id="@+id/img_Location"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+
                 <TextView
                     android:id="@+id/tv_details"
                     android:layout_width="match_parent"

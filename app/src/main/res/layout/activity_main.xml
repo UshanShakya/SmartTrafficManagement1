@@ -6,36 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reportsRecyclerView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_sign_out"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
     <Button
         android:id="@+id/btn_sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:enabled="false"
+        android:layout_alignParentRight="true"
         android:text="Sign Out"
         />
 
     <Button
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/btn_sign_out"
         android:id="@+id/btn_report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:enabled="false"
         android:text="Report"
         />
-
-    <Button
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/btn_report"
-        android:id="@+id/btn_dashboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:enabled="false"
-        android:text="Dashboard"
-        />
-
-
 </RelativeLayout>

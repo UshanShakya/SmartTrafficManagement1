@@ -3,6 +3,7 @@ package com.example.smarttrafficmanagement1;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -28,9 +29,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     List<AuthUI.IdpConfig> providers;
-    private Button btnReport, btnDashboard, btnLogout;
+    private CardView btnReport, btnDashboard, btnLogout;
     private final static int MY_REQUEST_CODE =0404;
     public RecyclerView mRecyclerView;
+    private long backPressedTime;
+    private Toast backtoast;
+
 
 
     @Override
@@ -119,7 +123,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if (backPressedTime+2000> System.currentTimeMillis()){
+            backtoast.cancel();
+            super.onBackPressed();
+
+            return;
+        }
+        else {
+            backtoast=Toast.makeText(getBaseContext(), "Press Back Again to Exit", Toast.LENGTH_SHORT);
+            backtoast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
+
     }
 
     @Override
@@ -140,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, ""+response.getError().getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
+
 
     }
 }

@@ -53,7 +53,7 @@ import java.util.UUID;
 public class ReportActivity extends AppCompatActivity {
     private CardView cvAccident, cvConstruction, cvTrafficJam, cvOthers;
     private TextView placeName;
-    private Button btn_get_Photo;
+    private CardView btn_get_Photo;
     Reports reports;
     DatabaseReference databaseReference;
     static String userName;
@@ -64,11 +64,13 @@ public class ReportActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private Uri filepath;
     private String image_name;
+    Toast toast;
 
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ReportActivity.this, MainActivity.class);
+        toast.cancel();
         startActivity(intent);
         finish();
     }
@@ -134,13 +136,18 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
+                if(image_name==null){
+                    Toast.makeText(ReportActivity.this, "Please Upload an Image First.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Accident");
                 reports.setUserName(userName);
                 reports.setImage(image_name);
                 databaseReference.push().setValue(reports);
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
-                Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT).show();
+                toast=Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT);
+                        toast.show();
 //                Toast.makeText(ReportActivity.this, ""+filepath, Toast.LENGTH_SHORT).show();
 
 
@@ -157,8 +164,8 @@ public class ReportActivity extends AppCompatActivity {
                 databaseReference.push().setValue(reports);
                 reports.setImage(image_name);
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
-                Toast.makeText(ReportActivity.this, "Construction Reported Successfully", Toast.LENGTH_SHORT).show();
-
+                toast=Toast.makeText(ReportActivity.this, "Construction Reported Successfully", Toast.LENGTH_SHORT);
+                toast.show();
 
             }
         });
@@ -174,7 +181,8 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setImage(image_name);
 
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
-                Toast.makeText(ReportActivity.this, "Traffic Jam Reported Successfully", Toast.LENGTH_SHORT).show();
+                toast=Toast.makeText(ReportActivity.this, "Traffic Jam Reported Successfully", Toast.LENGTH_SHORT);
+                toast.show();
 
 
             }
@@ -191,8 +199,8 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setImage(image_name);
 
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
-                Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT).show();
-
+               toast= Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT);
+               toast.show();
 
             }
         });
@@ -295,6 +303,7 @@ public class ReportActivity extends AppCompatActivity {
 //            });
         }
     }
+
 
     private Uri getImageUri(Context applicationContext, Bitmap bitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

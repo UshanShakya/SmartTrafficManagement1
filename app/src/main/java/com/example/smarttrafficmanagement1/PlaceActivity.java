@@ -3,6 +3,7 @@ package com.example.smarttrafficmanagement1;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -56,8 +57,9 @@ public class PlaceActivity extends AppCompatActivity {
             Place.Field.ADDRESS);
     TextView edt_Address, tvDetails;
 //    ImageView img_Location;
-    Button btn_find_current_place, btn_get_Photo, btn_confirm;
+    CardView btn_find_current_place, btn_get_Photo, btn_confirm;
     private String placeID = "";
+    Toast toast;
 
 
 
@@ -71,8 +73,8 @@ public class PlaceActivity extends AppCompatActivity {
 
         btn_find_current_place = findViewById(R.id.btn_get_current_place);
         edt_Address = findViewById(R.id.edt_Address);
-        tvDetails = findViewById(R.id.tv_details);
-        btn_get_Photo = findViewById(R.id.btn_get_lat_lan);
+//        tvDetails = findViewById(R.id.tv_details);
+//        btn_get_Photo = findViewById(R.id.btn_get_lat_lan);
 //        img_Location = findViewById(R.id.img_Location);
         btn_confirm = findViewById(R.id.btn_confirm);
 
@@ -81,12 +83,12 @@ public class PlaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(edt_Address.getText())) {
-                    Toast.makeText(PlaceActivity.this, "You need to select your location first.", Toast.LENGTH_SHORT).show();
+                    toast = Toast.makeText(PlaceActivity.this, "You need to select your location first.", Toast.LENGTH_SHORT);
+                    toast.show();
                     return;
                 }
-                Toast.makeText(PlaceActivity.this, "" + edt_Address.getText(), Toast.LENGTH_SHORT).show();
-
                 Intent reportIntent = new Intent(PlaceActivity.this, ReportActivity.class);
+                toast.cancel();
                 reportIntent.putExtra("address", edt_Address.getText().toString());
                 startActivity(reportIntent);
             }
@@ -99,72 +101,72 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
 
-        btn_get_Photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+//        btn_get_Photo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
 //                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                startActivityForResult(intent,CAMERA_REQUEST_CODE);
-                if (TextUtils.isEmpty(placeID)) {
-                    Toast.makeText(PlaceActivity.this, "Place Id cannot be null.", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    getPhotoAndDetails(placeID);
-                }
-            }
-        });
+//                if (TextUtils.isEmpty(placeID)) {
+//                    Toast.makeText(PlaceActivity.this, "Place Id cannot be null.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                } else {
+//                    getPhotoAndDetails(placeID);
+//                }
+//            }
+//        });
         initPlaces();
     }
 
-    private void getPhotoAndDetails(final String placeID) {
-        FetchPlaceRequest request = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.PHOTO_METADATAS)).build();
-        placesClient.fetchPlace(request)
-                .addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
-                    @Override
-                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-//                        final Place place = fetchPlaceResponse.getPlace();
-//                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-//                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
-//                        placesClient.fetchPhoto(photoRequest)
-//                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
+//    private void getPhotoAndDetails(final String placeID) {
+//        FetchPlaceRequest request = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.PHOTO_METADATAS)).build();
+//        placesClient.fetchPlace(request)
+//                .addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
+//                    @Override
+//                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+////                        final Place place = fetchPlaceResponse.getPlace();
+////                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+////                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
+////                        placesClient.fetchPhoto(photoRequest)
+////                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
+////                                    @Override
+////                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
+////                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
+////                                        img_Location.setImageBitmap(bitmap);
+////                                    }
+////                                }).addOnFailureListener(new OnFailureListener() {
+////                            @Override
+////                            public void onFailure(@NonNull Exception e) {
+////                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+////                            }
+////                        });
+//
+//                        FetchPlaceRequest request1 = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.LAT_LNG)).build();
+//                        placesClient.fetchPlace(request1)
+//                                .addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
 //                                    @Override
-//                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
-//                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
-//                                        img_Location.setImageBitmap(bitmap);
+//                                    public void onComplete(@NonNull Task<FetchPlaceResponse> task) {
+//                                        if (task.isSuccessful()){
+//                                            Place place1 = task.getResult().getPlace();
+//                                            tvDetails.setText(new StringBuilder(String.valueOf(place1.getLatLng().latitude)).append("/")
+//                                                    .append(place1.getLatLng().longitude));
+//                                        }
 //                                    }
 //                                }).addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-
-                        FetchPlaceRequest request1 = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.LAT_LNG)).build();
-                        placesClient.fetchPlace(request1)
-                                .addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<FetchPlaceResponse> task) {
-                                        if (task.isSuccessful()){
-                                            Place place1 = task.getResult().getPlace();
-                                            tvDetails.setText(new StringBuilder(String.valueOf(place1.getLatLng().latitude)).append("/")
-                                                    .append(place1.getLatLng().longitude));
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
+//                                    @Override
+//                                        public void onFailure(@NonNull Exception e) {
+//                                        Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
 
     private void requestPermission(){
         Dexter.withActivity(this)

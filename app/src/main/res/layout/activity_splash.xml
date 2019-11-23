@@ -19,20 +19,21 @@
 
         <ImageView
             android:id="@+id/imgLPT"
-            android:src="@drawable/background"
+            android:src="@drawable/imglogo"
             android:layout_gravity="center"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
         <TextView
             android:id="@+id/tvname"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lost Phone Tracker"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorAccent"
+            android:text="Check Traffic Anywhere."
+            android:textSize="30sp"
+            android:textStyle="bold|italic"
+            android:textColor="#00BCD4"
+
             android:layout_alignParentLeft="true"
             />
     </LinearLayout>

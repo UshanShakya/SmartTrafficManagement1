@@ -64,7 +64,7 @@ public class ReportActivity extends AppCompatActivity {
     private String image_name;
     private Toast toast;
 
-    private StorageReference storageReference;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference("Report");
     private DatabaseReference databaseReference;
     private StorageTask mUploadTask;
     private Uri tempUri;

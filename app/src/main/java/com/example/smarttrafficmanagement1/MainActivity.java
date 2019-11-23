@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private List<Reports> mReports;
 
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
         mReports = new ArrayList<>();
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Report");
+
+
+        sharedPreferences = getSharedPreferences("User",MODE_PRIVATE);
+
+
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -89,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
-showSignInOptions();
-        btnReport.setOnClickListener(new View.OnClickListener() {
+
+        showSignInOptions();
+
+    btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent reportIntent = new Intent(MainActivity.this, PlaceActivity.class);
@@ -126,6 +134,8 @@ showSignInOptions();
             }
         });
     }
+
+
 
 
     private void showSignInOptions() {

@@ -8,31 +8,37 @@
     tools:context=".PlaceActivity"
     android:background="@drawable/background">
 
-
-        <ScrollView
-            android:layout_margin="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <Button
+                android:orientation="vertical"
+                android:padding="20dp">
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_get_current_place"
-                    android:text="Find Current Place"
-                    android:layout_marginTop="10dp"
-                    android:padding="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:enabled="false"
+                    app:cardElevation="10dp"
+                    app:cardCornerRadius="10dp"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Find Current Place"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textStyle="bold|italic"
+                        android:textSize="20sp"
 
-                    android:background="@drawable/button_round"
-                    android:layout_gravity="center"/>
 
+                        />
+                </androidx.cardview.widget.CardView>
 
-
-
-                    <EditText
+                <EditText
                         android:id="@+id/edt_Address"
                         android:hint="Current Address"
                         android:textSize="20sp"
@@ -42,32 +48,46 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                <Button
-                    android:background="@drawable/button_round"
-                    android:layout_gravity="center"
-                    android:id="@+id/btn_get_lat_lan"
-                    android:text="Add Location Photo"
-                    android:layout_marginTop="20dp"
-                    android:padding="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+<!--                <Button-->
+<!--                    android:background="@drawable/button_round"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:id="@+id/btn_get_lat_lan"-->
+<!--                    android:text="Add Location Photo"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:padding="20dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
 
 
-                <TextView
-                    android:id="@+id/tv_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_details"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
 
-                <Button
-                    android:background="@drawable/button_round"
-                    android:layout_gravity="center"
+                <androidx.cardview.widget.CardView
                     android:id="@+id/btn_confirm"
-                    android:text="Confirm Location"
-                    android:layout_marginTop="20dp"
-                    android:padding="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_marginTop="20dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:enabled="false"
+                    app:cardElevation="10dp"
+                    app:cardCornerRadius="10dp"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Confirm Location"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold|italic"
+                        android:textSize="20sp"
+
+
+                        />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-        </ScrollView>
     </RelativeLayout>

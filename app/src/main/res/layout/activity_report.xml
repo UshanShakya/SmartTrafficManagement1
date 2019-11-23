@@ -9,7 +9,8 @@
     tools:context=".ReportActivity">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -36,15 +37,30 @@
         </TextView>
         </RelativeLayout>
 
-        <Button
-            android:background="@drawable/button_round"
-            android:layout_gravity="center"
-            android:id="@+id/btn_get_photo"
-            android:text="Add Location Photo"
-            android:layout_marginTop="20dp"
-            android:padding="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_get_photo"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:enabled="false"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Add Location Photo"                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold|italic"
+                    android:textSize="20sp"
+
+
+                    />
+            </androidx.cardview.widget.CardView>
+
 
     <ImageView
         android:layout_margin="20dp"
@@ -94,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold|italic">
 
 
@@ -135,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:layout_gravity="center"
                     android:textStyle="bold|italic">
 
@@ -177,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:layout_gravity="center"
                     android:textStyle="bold|italic">
 
@@ -216,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:textStyle="bold|italic"
                     android:layout_gravity="center">
 

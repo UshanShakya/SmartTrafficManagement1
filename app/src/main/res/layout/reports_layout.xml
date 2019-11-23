@@ -4,25 +4,79 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp">
 
+    <ImageView
+        android:id="@+id/img_Report"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:background="@color/quantum_grey"
+        android:layout_margin="10dp"/>
+
+
 
     <TextView
-        android:id="@+id/reporter_Email"
-        android:layout_width="match_parent"
+        android:layout_below="@+id/img_Report"
+        android:id="@+id/reporters_Report"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name of reporter"/>
+        android:text="Report :"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"/>
+
 
     <TextView
-        android:layout_below="@+id/reporter_Email"
+        android:layout_below="@+id/img_Report"
+        android:id="@+id/reporter_Report"
+        android:layout_toEndOf="@id/reporters_Report"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kind of report"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"/>
+
+    <TextView
+        android:layout_below="@+id/reporter_Report"
+        android:id="@+id/reporters_Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location :"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"/>
+
+    <TextView
+        android:layout_below="@+id/reporter_Report"
         android:id="@+id/reporter_Location"
+        android:layout_toEndOf="@id/reporters_Location"
+        android:layout_marginLeft="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Location"/>
+        android:text="Location"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"/>
+
+
     <TextView
         android:layout_below="@+id/reporter_Location"
-        android:id="@+id/reporter_Report"
+        android:id="@+id/reporters_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name of reporter: "
+        android:textSize="16sp"
+        android:textStyle="bold|italic"/>
+    <TextView
+        android:layout_below="@+id/reporter_Location"
+        android:id="@+id/reporter_Email"
+        android:layout_toEndOf="@id/reporters_Email"
+        android:layout_marginLeft="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kind of report"/>
+        android:text="Name of reporter"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"/>
+
+
+
 
 
 

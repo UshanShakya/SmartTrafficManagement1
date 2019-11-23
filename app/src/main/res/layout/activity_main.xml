@@ -4,32 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/background"
+    tools:context=".MainActivity"
+    android:padding="10dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reportsRecyclerView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_sign_out"
+        android:layout_above="@+id/buttons"
+        />
+
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+
         >
 
-    </androidx.recyclerview.widget.RecyclerView>
-    <Button
-        android:id="@+id/btn_sign_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:enabled="false"
-        android:layout_alignParentRight="true"
-        android:text="Sign Out"
-        />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_sign_out"
+            android:layout_width="100dp"
+            android:padding="10dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:enabled="false"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Signout"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:textSize="20sp"
 
-    <Button
-        android:id="@+id/btn_report"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:enabled="false"
-        android:text="Report"
-        />
+
+                />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_report"
+            android:layout_width="100dp"
+            android:padding="10dp"
+            android:layout_height="50dp"
+            android:enabled="false"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Report"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:textSize="20sp"
+
+
+                />
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
 </RelativeLayout>

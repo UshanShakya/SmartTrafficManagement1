@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -54,17 +56,21 @@ public class ReportActivity extends AppCompatActivity {
     private CardView cvAccident, cvConstruction, cvTrafficJam, cvOthers;
     private TextView placeName;
     private CardView btn_get_Photo;
-    Reports reports;
-    DatabaseReference databaseReference;
+    private Reports reports;
     static String userName;
-    long maxId =0;
-    ImageView img_Location;
+    private ImageView img_Location;
     private static final int CAMERA_REQUEST_CODE =1;
-    private StorageReference storageReference;
-    private ProgressDialog mProgressDialog;
     private Uri filepath;
     private String image_name;
-    Toast toast;
+    private Toast toast;
+
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
+    private StorageTask mUploadTask;
+    private Uri tempUri;
+
+    private String downloadUrl;
+
 
 
     @Override
@@ -90,8 +96,6 @@ public class ReportActivity extends AppCompatActivity {
 
         img_Location = findViewById(R.id.img_Location);
 
-        mProgressDialog =new ProgressDialog(this);
-
         storageReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -99,18 +103,7 @@ public class ReportActivity extends AppCompatActivity {
         requestPermisssion();
 
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Report");
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists())
-//                    maxId= (dataSnapshot.getChildrenCount());
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userName = user.getEmail();
 
@@ -118,8 +111,6 @@ public class ReportActivity extends AppCompatActivity {
         if (bundle!=null){
             String address = bundle.getString("address");
             placeName.setText(address);
-//            Toast.makeText(this, "Address : "+address, Toast.LENGTH_SHORT).show();
-
         }
         else {
             Toast.makeText(this, "No message.", Toast.LENGTH_SHORT).show();
@@ -143,13 +134,17 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Accident");
                 reports.setUserName(userName);
-                reports.setImage(image_name);
-                databaseReference.push().setValue(reports);
-//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
-                toast=Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT);
-                        toast.show();
-//                Toast.makeText(ReportActivity.this, ""+filepath, Toast.LENGTH_SHORT).show();
+                reports.setImage(downloadUrl);
 
+                if (downloadUrl==null){
+                    Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                databaseReference.push().setValue(reports);
+                toast=Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT);
+                toast.show();
+                clearImage();
 
             }
         });
@@ -161,11 +156,18 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Construction");
                 reports.setUserName(userName);
+                reports.setImage(downloadUrl);
+
+                if (downloadUrl==null){
+                    Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 databaseReference.push().setValue(reports);
-                reports.setImage(image_name);
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 toast=Toast.makeText(ReportActivity.this, "Construction Reported Successfully", Toast.LENGTH_SHORT);
                 toast.show();
+                clearImage();
 
             }
         });
@@ -177,12 +179,19 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Traffic Jam");
                 reports.setUserName(userName);
+                reports.setImage(downloadUrl);
+
+                if (downloadUrl==null){
+                    Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 databaseReference.push().setValue(reports);
-                reports.setImage(image_name);
 
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 toast=Toast.makeText(ReportActivity.this, "Traffic Jam Reported Successfully", Toast.LENGTH_SHORT);
                 toast.show();
+                clearImage();
+
 
 
             }
@@ -191,51 +200,63 @@ public class ReportActivity extends AppCompatActivity {
         cvOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 uploadImage();
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Others");
                 reports.setUserName(userName);
+                reports.setImage(downloadUrl);
+                if (downloadUrl==null){
+                    Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 databaseReference.push().setValue(reports);
-                reports.setImage(image_name);
 
-//                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
+
                toast= Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT);
                toast.show();
+                clearImage();
+
 
             }
         });
     }
 
-    private void uploadImage() {
-        if (filepath != null){
-//            final ProgressDialog progressDialog = new ProgressDialog(this);
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
+    private void clearImage() {
+        tempUri=null;
+    }
 
-            image_name = UUID.randomUUID().toString();
+    private void uploadImage() {
+        if (tempUri != null){
+
+            image_name = String.valueOf(System.currentTimeMillis());
             StorageReference ref = storageReference.child("images/"+image_name);
-            ref.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            ref.putFile(tempUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    progressDialog.dismiss();
-                    Toast.makeText(ReportActivity.this, "Uploaded..", Toast.LENGTH_SHORT).show();
-
+                    if (taskSnapshot.getMetadata() != null) {
+                        if (taskSnapshot.getMetadata().getReference() != null) {
+                            Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    downloadUrl = uri.toString();
+                                    Toast.makeText(ReportActivity.this, "Uploaded..", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-//                    progressDialog.dismiss();
                     Toast.makeText(ReportActivity.this, "Failed to Upload.."+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-//                    progressDialog.setMessage("Uploaded "+ (int)progress+"%");
-//                }
-//            });
+        }
+        else {
+            Toast.makeText(this, "Please reclick image...", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -263,44 +284,12 @@ public class ReportActivity extends AppCompatActivity {
         if (requestCode==CAMERA_REQUEST_CODE && resultCode==RESULT_OK){
 
             Bitmap bitmap  = (Bitmap) data.getExtras().get("data");
-            img_Location.setImageBitmap(bitmap);
+            tempUri = getImageUri(getApplicationContext(), bitmap);
+//            filepath = getImageUri(getApplicationContext(), bitmap);
+            Picasso.get().load(tempUri).into(img_Location);
 
-            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-            filepath = getImageUri(getApplicationContext(), bitmap);
+//            Toast.makeText(this, ""+getRealPathFromURI(tempUri), Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(this, ""+getRealPathFromURI(tempUri), Toast.LENGTH_SHORT).show();
-
-//            System.out.println(getRealPathFromURI(tempUri));
-
-//            mProgressDialog.setMessage("Uploading Image....");
-//            mProgressDialog.show();
-//            final Uri uri = data.getData();
-//            final StorageReference filepath = storageReference.child("Photos").child("firstimage.jpg");
-//
-//
-//
-//            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    mProgressDialog.dismiss();
-//                    Task<Uri> urlTask = filepath.putFile(uri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                        @Override
-//                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                            if (!task.isSuccessful()) {
-//
-//                                throw task.getException();
-//                            }
-//
-//                             Continue with the task to get the download URL
-//                            return filepath.getDownloadUrl();
-
-//                        }
-//                    });
-//                    Picasso.get().load(String.valueOf(urlTask)).into(img_Location);
-
-//                    Toast.makeText(ReportActivity.this, "Uploaded Successfully!!!", Toast.LENGTH_SHORT).show();
-//                }
-//            });
         }
     }
 
@@ -311,10 +300,5 @@ public class ReportActivity extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(applicationContext.getContentResolver(), bitmap, "Title", null);
         return Uri.parse(path);
     }
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
+
     }

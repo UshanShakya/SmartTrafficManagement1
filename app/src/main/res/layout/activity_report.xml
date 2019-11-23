@@ -69,6 +69,7 @@
      android:layout_height="300dp"
         android:background="@color/quantum_grey"/>
 
+
     <GridLayout
         android:columnCount="2"
         android:rowCount="2"

@@ -88,7 +88,7 @@ public class PlaceActivity extends AppCompatActivity {
                     return;
                 }
                 Intent reportIntent = new Intent(PlaceActivity.this, ReportActivity.class);
-                toast.cancel();
+
                 reportIntent.putExtra("address", edt_Address.getText().toString());
                 startActivity(reportIntent);
             }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.smarttrafficmanagement1.Adapter.ReportsAdapter;
 import com.example.smarttrafficmanagement1.Class.RecyclerViewConfig;
 import com.example.smarttrafficmanagement1.Class.Reports;
 import com.example.smarttrafficmanagement1.DatabaseReference.FirebaseDatabaseHelper;
@@ -23,17 +25,28 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     List<AuthUI.IdpConfig> providers;
-    private CardView btnReport, btnDashboard, btnLogout;
+    private CardView btnReport, btnTraffic, btnLogout;
     private final static int MY_REQUEST_CODE =0404;
-    public RecyclerView mRecyclerView;
     private long backPressedTime;
     private Toast backtoast;
+
+    private RecyclerView mRecyclerView;
+    private ReportsAdapter reportsAdapter;
+
+    private DatabaseReference mDatabaseRef;
+    private List<Reports> mReports;
 
 
 
@@ -43,50 +56,53 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnLogout = findViewById(R.id.btn_sign_out);
         btnReport = findViewById(R.id.btn_report);
+        btnTraffic = findViewById(R.id.btn_check_traffic);
         mRecyclerView = findViewById(R.id.reportsRecyclerView1);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mReports = new ArrayList<>();
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Report");
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot:dataSnapshot.getChildren()){
+                    Reports reports = postSnapshot.getValue(Reports.class);
+                    mReports.add(reports);
+                }
+                reportsAdapter = new ReportsAdapter(MainActivity.this,mReports);
+                mRecyclerView.setAdapter(reportsAdapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         providers= Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
-
-        new FirebaseDatabaseHelper().readReports(new FirebaseDatabaseHelper.DataStatus() {
-                                                     @Override
-                                                     public void DataIsLoaded(List<Reports> reportsList1, List<String> keys) {
-                                                         new RecyclerViewConfig().setConfig(mRecyclerView, MainActivity.this, reportsList1, keys);
-                                                     }
-
-                                                     @Override
-                                                     public void DataIsInserted() {
-
-                                                     }
-
-                                                     @Override
-                                                     public void DataIsUpdated() {
-
-                                                     }
-
-                                                     @Override
-                                                     public void DataIsDeleted() {
-
-                                                     }
-                                                 });
-        showSignInOptions();
-
-
-//        btnDashboard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent dashboardIntent = new Intent(MainActivity.this, DashboardActivity.class);
-//                startActivity(dashboardIntent);
-//            }
-//        });
+showSignInOptions();
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent reportIntent = new Intent(MainActivity.this, PlaceActivity.class);
                 startActivity(reportIntent);
+            }
+        });
+        btnTraffic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent trafficIntent = new Intent(MainActivity.this, TrafficActivity.class);
+                startActivity(trafficIntent);
+
             }
         });
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode==RESULT_OK)
             {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
                 btnLogout.setEnabled(true);
                 btnReport.setEnabled(true);
                 mRecyclerView.setEnabled(true);

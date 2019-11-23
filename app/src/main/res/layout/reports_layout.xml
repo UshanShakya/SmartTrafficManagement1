@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:text="Report :"
         android:textSize="20sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
 
 
     <TextView
@@ -33,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="Kind of report"
         android:textSize="20sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
 
     <TextView
         android:layout_below="@+id/reporter_Report"
@@ -42,7 +44,8 @@
         android:layout_height="wrap_content"
         android:text="Location :"
         android:textSize="18sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
 
     <TextView
         android:layout_below="@+id/reporter_Report"
@@ -53,7 +56,8 @@
         android:layout_height="wrap_content"
         android:text="Location"
         android:textSize="18sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
 
 
     <TextView
@@ -63,7 +67,8 @@
         android:layout_height="wrap_content"
         android:text="Name of reporter: "
         android:textSize="16sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
     <TextView
         android:layout_below="@+id/reporter_Location"
         android:id="@+id/reporter_Email"
@@ -73,7 +78,8 @@
         android:layout_height="wrap_content"
         android:text="Name of reporter"
         android:textSize="16sp"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/white"/>
 
 
 

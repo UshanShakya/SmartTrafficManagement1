@@ -47,8 +47,12 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 
@@ -70,6 +74,7 @@ public class ReportActivity extends AppCompatActivity {
     private Uri tempUri;
 
     private String downloadUrl;
+    private String day;
 
 
 
@@ -100,6 +105,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
         reports = new Reports();
+        day = String.valueOf(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis()));
         requestPermisssion();
 
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Report");
@@ -135,7 +141,7 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Accident");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
-
+                reports.setDate(day);
                 if (downloadUrl==null){
                     Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
                     return;
@@ -144,8 +150,8 @@ public class ReportActivity extends AppCompatActivity {
                 databaseReference.push().setValue(reports);
                 toast=Toast.makeText(ReportActivity.this, "Accident Reported Successfully", Toast.LENGTH_SHORT);
                 toast.show();
-                clearImage();
-
+                Intent rintent = new Intent(ReportActivity.this, MainActivity.class);
+                startActivity(rintent);
             }
         });
 
@@ -153,10 +159,16 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
+                if(image_name==null){
+                    Toast.makeText(ReportActivity.this, "Please Upload an Image First.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Construction");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+                reports.setDate(day);
+
 
                 if (downloadUrl==null){
                     Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
@@ -166,8 +178,10 @@ public class ReportActivity extends AppCompatActivity {
                 databaseReference.push().setValue(reports);
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 toast=Toast.makeText(ReportActivity.this, "Construction Reported Successfully", Toast.LENGTH_SHORT);
+
                 toast.show();
-                clearImage();
+                Intent rintent = new Intent(ReportActivity.this, MainActivity.class);
+                startActivity(rintent);
 
             }
         });
@@ -176,10 +190,16 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
+                if(image_name==null){
+                    Toast.makeText(ReportActivity.this, "Please Upload an Image First.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Traffic Jam");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+                reports.setDate(day);
+
 
                 if (downloadUrl==null){
                     Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
@@ -190,8 +210,8 @@ public class ReportActivity extends AppCompatActivity {
 //                databaseReference.child(String.valueOf(maxId+1)).setValue("Reports");
                 toast=Toast.makeText(ReportActivity.this, "Traffic Jam Reported Successfully", Toast.LENGTH_SHORT);
                 toast.show();
-                clearImage();
-
+                Intent rintent = new Intent(ReportActivity.this, MainActivity.class);
+                startActivity(rintent);
 
 
             }
@@ -202,10 +222,16 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 uploadImage();
+                if(image_name==null){
+                    Toast.makeText(ReportActivity.this, "Please Upload an Image First.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 reports.setLocation(placeName.getText().toString().trim());
                 reports.setReport("Others");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+                reports.setDate(day);
+
                 if (downloadUrl==null){
                     Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
                     return;
@@ -213,18 +239,16 @@ public class ReportActivity extends AppCompatActivity {
                 databaseReference.push().setValue(reports);
 
 
-               toast= Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT);
-               toast.show();
-                clearImage();
+                toast= Toast.makeText(ReportActivity.this, "Reported Successfully", Toast.LENGTH_SHORT);
+                toast.show();
 
+                Intent rintent = new Intent(ReportActivity.this, MainActivity.class);
+                startActivity(rintent);
 
             }
         });
     }
 
-    private void clearImage() {
-        tempUri=null;
-    }
 
     private void uploadImage() {
         if (tempUri != null){
@@ -261,20 +285,20 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void requestPermisssion() {
-            Dexter.withActivity(this)
-                    .withPermissions(Arrays.asList(Manifest.permission.CAMERA))
-                    .withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
+        Dexter.withActivity(this)
+                .withPermissions(Arrays.asList(Manifest.permission.CAMERA))
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                            Toast.makeText(ReportActivity.this, "Please give access to camera.", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        Toast.makeText(ReportActivity.this, "Please give access to camera.", Toast.LENGTH_SHORT).show();
 
-                        }
-                    }).check();
+                    }
+                }).check();
 
     }
 
@@ -301,4 +325,4 @@ public class ReportActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    }
+}

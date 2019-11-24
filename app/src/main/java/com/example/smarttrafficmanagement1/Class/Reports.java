@@ -5,6 +5,7 @@ public class Reports {
     private String Location;
     private String Report;
     private String Image;
+    private String Date;
 
     public String getUserName() {
         return userName;
@@ -36,6 +37,14 @@ public class Reports {
 
     public void setImage(String image) {
         Image = image;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
     }
 }
 

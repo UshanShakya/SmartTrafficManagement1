@@ -57,7 +57,9 @@ public class PlaceActivity extends AppCompatActivity {
             Place.Field.ADDRESS);
     TextView edt_Address, tvDetails;
 //    ImageView img_Location;
-    CardView btn_find_current_place, btn_get_Photo, btn_confirm;
+    CardView btn_find_current_place, btn_confirm;
+    double latitudes;
+    double longitudes;
     private String placeID = "";
     Toast toast;
 
@@ -90,6 +92,10 @@ public class PlaceActivity extends AppCompatActivity {
                 Intent reportIntent = new Intent(PlaceActivity.this, ReportActivity.class);
 
                 reportIntent.putExtra("address", edt_Address.getText().toString());
+                reportIntent.putExtra("latitude",latitudes);
+                reportIntent.putExtra("longitude",longitudes);
+
+//                Toast.makeText(PlaceActivity.this, ""+latitudes+ "       "+longitudes, Toast.LENGTH_SHORT).show();
                 startActivity(reportIntent);
             }
         });
@@ -124,23 +130,23 @@ public class PlaceActivity extends AppCompatActivity {
 //                .addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
 //                    @Override
 //                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-////                        final Place place = fetchPlaceResponse.getPlace();
-////                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-////                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
-////                        placesClient.fetchPhoto(photoRequest)
-////                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
-////                                    @Override
-////                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
-////                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
-////                                        img_Location.setImageBitmap(bitmap);
-////                                    }
-////                                }).addOnFailureListener(new OnFailureListener() {
-////                            @Override
-////                            public void onFailure(@NonNull Exception e) {
-////                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-////                            }
-////                        });
-//
+//                        final Place place = fetchPlaceResponse.getPlace();
+//                        PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+//                        FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).build();
+//                        placesClient.fetchPhoto(photoRequest)
+//                                .addOnSuccessListener(new OnSuccessListener<FetchPhotoResponse>() {
+//                                    @Override
+//                                    public void onSuccess(FetchPhotoResponse fetchPhotoResponse) {
+//                                        Bitmap bitmap = fetchPhotoResponse.getBitmap();
+//                                        img_Location.setImageBitmap(bitmap);
+//                                    }
+//                                }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+
 //                        FetchPlaceRequest request1 = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.LAT_LNG)).build();
 //                        placesClient.fetchPlace(request1)
 //                                .addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
@@ -150,6 +156,8 @@ public class PlaceActivity extends AppCompatActivity {
 //                                            Place place1 = task.getResult().getPlace();
 //                                            tvDetails.setText(new StringBuilder(String.valueOf(place1.getLatLng().latitude)).append("/")
 //                                                    .append(place1.getLatLng().longitude));
+//                                            latitude = (long) place1.getLatLng().latitude;
+//                                            longitude = (long) place1.getLatLng().longitude;
 //                                        }
 //                                    }
 //                                }).addOnFailureListener(new OnFailureListener() {
@@ -222,8 +230,30 @@ public class PlaceActivity extends AppCompatActivity {
                 Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
+        FetchPlaceRequest request1 = FetchPlaceRequest.builder(placeID,Arrays.asList(Place.Field.LAT_LNG)).build();
+        placesClient.fetchPlace(request1)
+                .addOnCompleteListener(new OnCompleteListener<FetchPlaceResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<FetchPlaceResponse> task) {
+                        if (task.isSuccessful()){
+                            Place place1 = task.getResult().getPlace();
+
+//                            Toast.makeText(PlaceActivity.this, ""+place1.getLatLng().latitude, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PlaceActivity.this, ""+place1.getLatLng().longitude, Toast.LENGTH_SHORT).show();
+                            latitudes= place1.getLatLng().latitude;
+                            longitudes= place1.getLatLng().longitude;
+//                            Toast.makeText(PlaceActivity.this, ""+lats+"  "+longs, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PlaceActivity.this, "latitude  :  "+place1.getLatLng().latitude + "longitude     :   "+place1.getLatLng().longitude , Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(PlaceActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void initPlaces() {
         Places.initialize(this,getString(R.string.places_api_key));
         placesClient = Places.createClient(this);

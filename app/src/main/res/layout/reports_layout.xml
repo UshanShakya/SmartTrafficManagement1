@@ -12,6 +12,15 @@
         android:background="@color/quantum_grey"
         android:layout_margin="10dp"/>
 
+    <Button
+        android:id="@+id/btnOpenMap"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="View in Map"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        />
+
 
 
     <TextView

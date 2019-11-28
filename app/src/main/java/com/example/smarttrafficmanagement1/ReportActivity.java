@@ -33,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -51,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -75,6 +77,8 @@ public class ReportActivity extends AppCompatActivity {
 
     private String downloadUrl;
     private String day;
+
+    private double latitude,longitude;
 
 
 
@@ -106,6 +110,8 @@ public class ReportActivity extends AppCompatActivity {
 
         reports = new Reports();
         day = String.valueOf(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis()));
+//        day = new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+//        day = String.valueOf(ServerValue.TIMESTAMP);
         requestPermisssion();
 
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Report");
@@ -117,6 +123,8 @@ public class ReportActivity extends AppCompatActivity {
         if (bundle!=null){
             String address = bundle.getString("address");
             placeName.setText(address);
+            latitude = bundle.getDouble("latitude");
+            longitude = bundle.getDouble("longitude");
         }
         else {
             Toast.makeText(this, "No message.", Toast.LENGTH_SHORT).show();
@@ -141,6 +149,10 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Accident");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+                reports.setLatitude(latitude);
+                reports.setLongitude(longitude);
+                reports.setDate(day);
+
                 reports.setDate(day);
                 if (downloadUrl==null){
                     Toast.makeText(ReportActivity.this, "Report error please report again.", Toast.LENGTH_SHORT).show();
@@ -167,6 +179,9 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Construction");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+
+                reports.setLatitude(latitude);
+                reports.setLongitude(longitude);
                 reports.setDate(day);
 
 
@@ -198,6 +213,9 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Traffic Jam");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+
+                reports.setLatitude(latitude);
+                reports.setLongitude(longitude);
                 reports.setDate(day);
 
 
@@ -230,6 +248,9 @@ public class ReportActivity extends AppCompatActivity {
                 reports.setReport("Others");
                 reports.setUserName(userName);
                 reports.setImage(downloadUrl);
+
+                reports.setLatitude(latitude);
+                reports.setLongitude(longitude);
                 reports.setDate(day);
 
                 if (downloadUrl==null){

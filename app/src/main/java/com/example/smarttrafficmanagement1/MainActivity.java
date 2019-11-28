@@ -101,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
         showSignInOptions();
+        }
+
         checkForDatabase();
 
     btnReport.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     private void showSignInOptions() {

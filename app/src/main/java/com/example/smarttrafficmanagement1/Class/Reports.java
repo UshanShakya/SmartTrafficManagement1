@@ -6,6 +6,25 @@ public class Reports {
     private String Report;
     private String Image;
     private String Date;
+    private double Latitude;
+    private double Longitude;
+
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
 
     public String getUserName() {
         return userName;

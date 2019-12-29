@@ -21,12 +21,33 @@
         android:id="@+id/Traffic">
 
     </TextView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reportsRecyclerView"
-        android:layout_below="@+id/Traffic"
-        android:layout_marginTop="20dp"
+
+    <TextView
+        android:layout_below="@id/Traffic"
+        android:id="@+id/text123"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:text="Road Lane 1 Traffic Density is :"
+        android:textColor="@android:color/white">
+
+    </TextView>
+    <TextView
+        android:layout_below="@id/text123"
+        android:id="@+id/density"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40sp"
+        android:textStyle="bold|italic"
+        android:text="Density"
+        android:textColor="@android:color/white">
+    </TextView>
+
+
+
 
 
 </RelativeLayout>

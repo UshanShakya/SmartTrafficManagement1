@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         Query dayQuery = mDatabaseRef.orderByChild("date").equalTo(String.valueOf(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis()-(1000 * 60 * 60 * 24))));
         dayQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+           public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
                     appleSnapshot.getRef().removeValue();
                 }
